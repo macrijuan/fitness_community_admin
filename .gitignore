@@ -1,0 +1,5 @@
+/package-lock.json
+/node_modules
+/.env
+/src/local_db.js
+/index.js
