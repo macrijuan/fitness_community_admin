@@ -2,13 +2,17 @@ const { Sequelize } = require('sequelize');
 require("dotenv").config();
 const dbConfig = require("./dbConfig.js");
 
-let sequelize = new Sequelize( `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`, dbConfig );
+let sequelize = process.env.ENVIORMENT === "live"
+ ?new Sequelize( `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`, dbConfig )
+:new Sequelize( `postgres://${process.env.LOCAL_DB_USER}:${process.env.LOCAL_DB_PASSWORD}@${process.env.LOCAL_DB_HOST}/${process.env.LOCAL_DB_NAME}`,{
+  logging:false, native:false
+})
 
 const modelDefiners = [
   require("./models/Activity.js"),
   require("./models/Exercise.js"),
   require("./models/Routine.js"),
-  require("./models/User.js"),
+  require("./models/User.js")
 ];
 
 modelDefiners.forEach(model => model(sequelize));
@@ -22,15 +26,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Activity, Exercise, Routine, User } = sequelize.models;
 
-User.belongsToMany( Activity, { through:"user_activities", timestamps:false } );
 Activity.belongsToMany( User, { through:"user_activities", timestamps:false } );
+User.belongsToMany( Activity, { through:"user_activities", timestamps:false } );
 
-User.belongsToMany( Routine, { through:"user_routine", timestamps:false } );
-Routine.belongsToMany( User, { through:"user_routine", timestamps:false } );
-
-User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false } );
 Exercise.belongsToMany( User, { through:"user_exercises", timestamps:false } );
+User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false } );
 
+Routine.belongsToMany( User, { through:"user_routines", timestamps:false } );
+User.belongsToMany( Routine, { through:"user_routines", timestamps:false } );
 
 module.exports = {
   ...sequelize.models,

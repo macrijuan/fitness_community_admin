@@ -1,6 +1,12 @@
-/package-lock.json
+#dependencies
 /node_modules
+/package-lock.json
+
+#secret
 /.env
-/src/local_db.js
+
+#local files
 /index.js
 /app.js
+/src/db.js
+/local_server_actions.js

@@ -1,9 +1,13 @@
 const express = require("express");
 const app = express();
 const serverless = require("serverless-http");
+const bodyParser = require("body-parser");
 
-const { conn } = require("../../src/db.js").handler;
-const routes = require("../../src/routes/index.js").handler;
+const { conn } = require("../../src/db.js");
+const routes = require("../../src/routes/index.js");
+
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'YOUR ORIGIN');
