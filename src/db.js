@@ -2,17 +2,22 @@ const { Sequelize } = require('sequelize');
 require("dotenv").config();
 const dbConfig = require("./dbConfig.js");
 
+// console.log(`postgres://${process.env.LOCAL_DB_USER}:${process.env.LOCAL_DB_PASSWORD}@${process.env.LOCAL_DB_HOST}:${process.env.LOCAL_DB_PORT}/${process.env.LOCAL_DB_NAME}`);
+
 let sequelize = process.env.ENVIORMENT === "live"
- ?new Sequelize( `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`, dbConfig )
-:new Sequelize( `postgres://${process.env.LOCAL_DB_USER}:${process.env.LOCAL_DB_PASSWORD}@${process.env.LOCAL_DB_HOST}/${process.env.LOCAL_DB_NAME}`,{
+ ?new Sequelize( `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, dbConfig )
+:new Sequelize( `postgres://${process.env.LOCAL_DB_USER}:${process.env.LOCAL_DB_PASSWORD}@${process.env.LOCAL_DB_HOST}:${process.env.LOCAL_DB_PORT}/${process.env.LOCAL_DB_NAME}`,{
   logging:false, native:false
 })
 
 const modelDefiners = [
   require("./models/Activity.js"),
+  require("./models/Admin.js"),
+  require("./models/Admin_session.js"),
   require("./models/Exercise.js"),
   require("./models/Routine.js"),
-  require("./models/User.js")
+  require("./models/User.js"),
+  require("./models/User_session.js"),
 ];
 
 modelDefiners.forEach(model => model(sequelize));
@@ -34,6 +39,8 @@ User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false } );
 
 Routine.belongsToMany( User, { through:"user_routines", timestamps:false } );
 User.belongsToMany( Routine, { through:"user_routines", timestamps:false } );
+
+// console.log(sequelize.models);
 
 module.exports = {
   ...sequelize.models,

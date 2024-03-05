@@ -1,5 +1,10 @@
-const dobleSpaceEraser = (data)=>{
+const doubleSpaceEraser = (data)=>{
   while(data.includes("  ")){
-    data.replace("  ", " ")
+    data = data.replace("  ", " ");
   };
+  return data;
+};
+
+module.exports = {
+  doubleSpaceEraser
 };

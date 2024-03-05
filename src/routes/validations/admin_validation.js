@@ -1,7 +1,11 @@
 const { is_mandatory, strict_length, strict_char_type, cant_contain, at_least_one, strict_size } = require("../../errors.js");
+//passwordVal tests below.
+const specChars = /^[@$!%*?&]{1,32}$/;//test 1
+const lowercase = /^[a-zà-ÿ]{1,32}$/;//test 2
+const uppercase = /^[A-ZÀ-Ý]{1,32}$/;//test 3
+const number = /^[\d]{1,32}$/;//test 4
 
 const emailVal = (email, errors)=>{
-  console.log(email);
   if(typeof email !== "string"){
     errors.email = [ is_mandatory( "email" ) ];
   }else{
@@ -9,7 +13,7 @@ const emailVal = (email, errors)=>{
   };
 };
 
-const passwordVal = (password, confPassword, errors)=>{
+const passwordVal = (password, conf_password, errors)=>{
   if(typeof password !== "string"){ errors.password=[ is_mandatory("Password") ]; return; };
   const approved = [];
   password.split("").forEach(e=>{
@@ -25,7 +29,7 @@ const passwordVal = (password, confPassword, errors)=>{
   if (!approved.includes(4))errors.password.push(at_least_one("password","number"));
   if (password.length<8 || password.length>35)errors.password.push(strict_length("password", 8, 35));
   if (password.split("").includes(" "))errors.password.push(cant_contain("password", "spaces"));
-  if(password!==confPassword) errors.password.push("The entered passwords are not equal.");
+  if(password!==conf_password) errors.conf_password = [ "The entered passwords are not equal." ];
   if(!errors.password.length)delete errors.password;
 };
 
@@ -34,21 +38,21 @@ const nameVal = ( name, errors, dataName )=>{
   if(!name || typeof name !== "string" || !name.length){
     errors[prop] = [ is_mandatory(`${dataName}`) ];
   }else{
-    errors[prop] = [];
-    if(name.length<2 || name.length>35) {errors[prop].push(strict_length(dataName, 2, 35));}
-    if(!nameFormat.test(name)) {errors[prop].push(strict_char_type(`${dataName}`, "letters and spaces"));}
+    if(name.length<2 || name.length>35)errors[prop][ strict_length(dataName, 2, 35) ];
   };
-  if(!errors[prop].length)delete errors[dataName.replace(" ", "_")];
+  // if(!errors[prop].length)delete errors[dataName.replace(" ", "_")];
 };
 
 const identityVal = ( identity, errors )=>{
   if(
-    typeof identity !== "number"
+    typeof identity !== "string"
     || !identity
-    ){ errors.identity = [ is_mandatory("identity") ]; return; };
+  ){ errors.identity = [ is_mandatory("identity") ]; return; };
+  identity = Number(identity);
   errors.identity = [];
-  if( identity % 1 !== 0)errors.identity.push( strict_char_type("an integer number") );
-  if( identity > 99999999 || identity < 1 ) errors.identity.push( strict_size("identity", 1, 99999999) );
+  if( identity % 1 !== 0 )errors.identity.push( strict_char_type( "identity", "an integer number" ) );
+  if( identity > 99999999 || identity < 1 ) errors.identity.push( strict_size( "identity", 1, 99999999 ) );
+  if( !errors.identity.length )delete errors.identity;
 };
 
 

@@ -1,8 +1,9 @@
 module.exports={
   unknown: { unknown:"An unknown error occured." },
-  multi_errors: (data)=>{ return {errors:data}; },
+  multi_errors: (data)=>{ return { errors:data }; },
   custom_error: ( dataName, data )=>{ return { errors:{ [dataName]:data } }; },
-  not_found: ( dataName )=>{return {notFound:dataName+" not found."}},
+  not_found: ( dataName )=>{ return { not_found:dataName+" not found." }; },
+  sign_in_not_found: ( dataName )=>{ return { sign_in_not_found:`There is no ${dataName} with such email and password.\nCheck the entered data.`}; },
   is_mandatory: ( dataName )=>`The ${dataName} field is mandatory`,
   strict_length: ( dataName, min, max )=>`The ${dataName} field must contain between ${min} and ${max} characters.`,
   strict_size: ( dataName, min, max )=>`The ${dataName} value must be between ${min} and ${max}.`,
