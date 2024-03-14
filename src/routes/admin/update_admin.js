@@ -25,7 +25,7 @@ router.put("/update_admin/:id",
             if(req.query.single){
               res.json(_admin);
             }else{
-              locals_setter(res, "Admin", "Administrators");
+              locals_setter( res, "Admin", "Administrators" );
               next(); 
             };
           })

@@ -1,10 +1,31 @@
 const express = require("express");
+const session = require('express-session');
 const app = express();
+const routes = require("../../src/routes/index.js");
 const serverless = require("serverless-http");
 const bodyParser = require("body-parser");
 
 const { conn } = require("../../src/db.js");
-const routes = require("../../src/routes/index.js");
+const key = require("../src/routes/server_key.js");
+
+server.use(( req, res, next )=>{
+  if(!req.secure){
+    console.log(req);
+    res.status(403).json(custom_error( "notSecure", "Connection is not secure." ));
+  }else{
+    next();
+  };
+});
+
+server.use(session({
+  secret: key(),
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 3600000,
+    secure: true,
+  }
+}));
 
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));

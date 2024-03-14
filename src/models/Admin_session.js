@@ -1,4 +1,4 @@
-const { UUID, UUIDV4, INTEGER } = require("sequelize");
+const { UUID, UUIDV4, INTEGER, TIME } = require("sequelize");
 
 module.exports = sequelize=>{
   sequelize.define("admin_session",{
@@ -10,6 +10,9 @@ module.exports = sequelize=>{
     },
     adminId:{
       type:INTEGER
+    },
+    expiresAt:{
+      type:TIME
     }
   },{
     timestamps:false
