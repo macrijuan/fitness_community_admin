@@ -3,9 +3,14 @@ const router = Router();
 const argon2 = require("argon2");
 
 const { emailVal, passwordVal, nameVal, identityVal } = require("../../input_validations/admin_validation.js");
-const { multi_errors } = require("../../../errors.js");
+const { multi_errors, custom_error } = require("../../../errors.js");
 
 router.use(async( req, res, next )=>{
+  req.session.usage = req.session.usage ?req.session.usage+1 :1
+  if( req.session.usage > 3 ){
+    res.json(custom_error("req_limit", "Limit of sign up requests exceeded."));
+    return;
+  };
   res.locals.errors = {};
   if(res.locals.is_update){
     res.locals.data = {};

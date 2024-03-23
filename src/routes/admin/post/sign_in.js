@@ -2,14 +2,15 @@ const { Router } = require("express");
 const router = Router();
 const { verify } = require("argon2");
 const crypto = require("crypto");
-const { unknown, sign_in_not_found, custom_error } = require("../errors.js");
-const { Admin, User } = require("../db.js");
+const { unknown, sign_in_not_found, custom_error, not_found } = require("../../../errors.js");
+const { Admin, User } = require("../../../db.js");
 
 
 
-router.post("/sign_in/admin",
+router.post("/admin/sign_in",
   async(req,res)=>{
     try{
+      if(req.session.user) return res.status( 403 ).json(custom_error( "session", "This user is currently active." ));
       Admin.findOne({
         where:{
           email:req.body.email,
@@ -17,14 +18,14 @@ router.post("/sign_in/admin",
         raw:true
       }).then(async admin=>{
         if(admin){
-          if(req.session.user) return res.json(custom_error( "session", "This user is currently active." ));
           verify("$argon2i$v=19$m=65536,t=3,p=4$"+admin.password, req.body.password)
           .then((match)=>{
             if(match){
               req.session.user = { id:admin.id, email:admin.email };
-              req.session.csrf_token = crypto.randomBytes(64).toString('hex');
-              // req.session.csrf_token = "mytoken";
-              res.setHeader('x-csrf-token', req.session.csrf_token);
+              if(admin.superAdmin)req.session.user.superAdmin=true;
+              // req.session.csrf_token = crypto.randomBytes(64).toString('hex');
+              req.session.csrf_token = "token";
+              res.setHeader('X-CSRF-Token', req.session.csrf_token);
               delete admin.password;
               res.json(admin);
             }else{
@@ -32,9 +33,9 @@ router.post("/sign_in/admin",
             };
           });
         }else{
-          res.status(404).json( sign_in_not_found("administrator") );
+          res.status(404).json( not_found( "Administrator" ) );
         };
-      })
+      });
     }catch(err){
       console.log(err);
       res.status(500).json(unknown);

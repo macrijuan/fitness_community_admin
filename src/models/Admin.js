@@ -1,4 +1,4 @@
-const { STRING, INTEGER } = require("sequelize");
+const { STRING, INTEGER, BOOLEAN } = require("sequelize");
 
 module.exports = sequelize => {
   sequelize.define("admin",{
@@ -22,6 +22,11 @@ module.exports = sequelize => {
       type:INTEGER,
       allowNull:false,
       unique:true
+    },
+    superAdmin:{
+      type:BOOLEAN,
+      defaultValue:false,
+      allowNull:false
     }
   });
 };

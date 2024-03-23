@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 require("dotenv").config();
 const dbConfig = require("./dbConfig.js");
 
-// console.log(`postgres://${process.env.LOCAL_DB_USER}:${process.env.LOCAL_DB_PASSWORD}@${process.env.LOCAL_DB_HOST}:${process.env.LOCAL_DB_PORT}/${process.env.LOCAL_DB_NAME}`);
+// console.log(`postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
 
 let sequelize = process.env.ENVIORMENT === "live"
  ?new Sequelize( `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, dbConfig )

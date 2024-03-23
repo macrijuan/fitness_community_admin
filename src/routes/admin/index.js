@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-
-const postAdmin = require("./post_admin.js");
+const sign_in = require("./post/sign_in.js");
+const postAdmin = require("./post/index.js");
 const getAdmins = require("./get_admins.js");
 const updateAdmin = require("./update_admin.js");
 const deleteAdmin = require("./delete_admin.js");

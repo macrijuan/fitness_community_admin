@@ -1,9 +1,15 @@
+const custom_error = ( dataName, data )=>{ return { errors:{ [dataName]:data } }; };
+
 module.exports={
-  unknown: { unknown:"An unknown error occured." },
+  custom_error,
   multi_errors: (data)=>{ return { errors:data }; },
-  custom_error: ( dataName, data )=>{ return { errors:{ [dataName]:data } }; },
-  not_found: ( dataName )=>{ return { not_found:dataName+" not found." }; },
-  sign_in_not_found: ( dataName )=>{ return { sign_in_not_found:`There is no ${dataName} with such email and password.\nCheck the entered data.`}; },
+  //SINGLE ERROR WITH CUSTOM DATA.
+  not_found: ( dataName )=>custom_error( "not_found", `${dataName} not found.` ),
+  sign_in_not_found: ( dataName )=>custom_error( "sign_in_not_found", `There is no ${dataName} with such email and password.\nCheck the entered data.`  ),
+  //SINGLE ERROR WITH FIXED MESSAGE.
+  req_limit: { errors:{ req_limit:'Too many requests, please try again later.' } },
+  unknown: { errors:{ unknown:"An unknown error occured." } },
+  //ERROR TO FILL AN "ERRORS" OBJECT (must return a string).
   is_mandatory: ( dataName )=>`The ${dataName} field is mandatory`,
   strict_length: ( dataName, min, max )=>`The ${dataName} field must contain between ${min} and ${max} characters.`,
   strict_size: ( dataName, min, max )=>`The ${dataName} value must be between ${min} and ${max}.`,
@@ -11,5 +17,6 @@ module.exports={
   at_least_one: ( dataName, data )=>`The ${dataName} field must contain at least one ${data}.`,
   cant_contain: ( dataName, data )=>`The ${dataName} field can't contain ${data}.`,
   existing: ( data )=>`This ${data} is already registered.`,
-  wrong_data_type: ( dataName, expected, recived, index )=>`${dataName}'s data type  --> expected: ${expected} --> recived: ${recived}.${index ?`Index: ${index}` :""}`,
+  auth: ( data ) => custom_error( "auth", `This ${data} is not authorized.` ),
+  wrong_data_type: ( dataName, expected, recived, index )=>`${dataName}'s data type  --> expected: ${expected} --> recived: ${recived}.${index ?`Index: ${index}` :""}`
 };
