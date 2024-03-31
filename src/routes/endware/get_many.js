@@ -31,27 +31,7 @@ router.use(async(req,res)=>{
   models[res.locals.model].findAndCountAll(res.locals.data)
   .then(_data=>{
     if(_data&&_data.rows.length){
-      // if(models[res.locals.model].name==="dish"){
-      //   for(let a = 0; a<_data.rows.length; a++){
-      //     _data.rows[a] = _data.rows[a].get({plain:true});
-      //     _data.rows[a].diets = _data.rows[a].diets.map(diet=>diet.name);
-      //   };
-      // };
-      // if(req.query.options==="t"){
-      //   Option.findOne({
-      //     where:{ model:models[res.locals.model].tableName },
-      //     attributes:{ exclude:[ "id", "model" ] }
-      //   }).then(opt=>{
-      //     if(opt){
-      //       _data.options=opt;
-      //       res.json(_data);
-      //     }else{
-      //       res.status(500).json( unknown );
-      //     };
-      //   });
-      // }else{
-        res.json(_data); 
-      // };
+      res.json(_data); 
     }else{
       res.status(404).json( not_found(res.locals.notFoundData) );
     };
