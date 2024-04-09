@@ -14,7 +14,7 @@ router.post("/post_admin",
     message:req_limit
   }),
   (req, res, next)=>{
-    if(!req.session.user.superAdmin) return res.status( 403 ).json( auth( "administrator" ) );
+    if(!req.session.user.super_admin) return res.status( 403 ).json( auth( "administrator" ) );
     if(!get_signup_count())return res.status( 404 ).json( not_found( "Administrator sign up requests" ) );
     next();
   },

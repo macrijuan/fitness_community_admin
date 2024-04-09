@@ -22,7 +22,7 @@ router.post("/admin/sign_in",
           .then((match)=>{
             if(match){
               req.session.user = { id:admin.id, email:admin.email };
-              if(admin.superAdmin)req.session.user.superAdmin=true;
+              if(admin.super_admin)req.session.user.super_admin=true;
               // req.session.csrf_token = crypto.randomBytes(64).toString('hex');
               req.session.csrf_token = 'token';
               res.setHeader('X-Csrf-Token', req.session.csrf_token);

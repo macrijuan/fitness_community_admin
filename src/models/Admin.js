@@ -31,7 +31,7 @@ module.exports = sequelize => {
       allowNull:false,
       unique:true
     },
-    superAdmin:{
+    super_admin:{
       type:BOOLEAN,
       defaultValue:false,
       allowNull:false

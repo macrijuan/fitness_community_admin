@@ -13,11 +13,12 @@ let sequelize = process.env.ENVIORMENT === "live"
 const modelDefiners = [
   require("./models/Activity.js"),
   require("./models/Admin.js"),
-  require("./models/Admin_session.js"),
+  // require("./models/Admin_session.js"),
   require("./models/Exercise.js"),
   require("./models/Routine.js"),
   require("./models/User.js"),
-  require("./models/User_session.js"),
+  // require("./models/User_session.js"),
+  require("./models/Option.js")
 ];
 
 modelDefiners.forEach(model => model(sequelize));
