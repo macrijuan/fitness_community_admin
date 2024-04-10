@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const router = Router();
+const { Op } = require("sequelize");
 const { not_found, unknown } = require("../../errors.js");
 const models = require("../../db.js");
 
@@ -29,7 +30,8 @@ router.use(async(req,res)=>{
       });
     };
   };
-
+  // console.log( res.locals.data );
+  console.log( req.query );
   models[ res.locals.model ].findAndCountAll( res.locals.data )
   .then( async _data =>{
     if( _data && _data.rows.length ){
