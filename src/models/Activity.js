@@ -1,4 +1,4 @@
-const { STRING, ENUM, INTEGER } = require("sequelize");
+const { STRING, ENUM, INTEGER, TIME } = require("sequelize");
 
 module.exports = sequelize=>{
   sequelize.define("activity",{
@@ -7,19 +7,35 @@ module.exports = sequelize=>{
       allowNull:false
     },
     day:{
-      type:INTEGER,
+      type: ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
       allowNull:false
     },
-    hour:{
-      type:INTEGER,
+    start_time:{
+      type:TIME,
       allowNull:false
     },
-    minutes:{
-      type:INTEGER,
+    end_time:{
+      type:TIME,
       allowNull:false
     },
-    teacher:{
-      type:STRING(20),
+    // start_hour:{
+    //   type: INTEGER,
+    //   allowNull: false
+    // },
+    // start_minutes:{
+    //   type: INTEGER,
+    //   allowNull: false
+    // },
+    // end_hour:{
+    //   type: INTEGER,
+    //   allowNull: false
+    // },
+    // end_minutes:{
+    //   type: INTEGER,
+    //   allowNull: false
+    // },
+    instructor:{
+      type:STRING(30),
       allowNull:false
     },
     description:{

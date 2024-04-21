@@ -10,10 +10,6 @@ module.exports = ( sequelize ) => {
     fields:{
       type:JSON
     },
-    isNotUpdatable:{
-      type:ARRAY( STRING ),
-      defaultValue:[]
-    },
     isRemovable:{
       type:BOOLEAN,
     }

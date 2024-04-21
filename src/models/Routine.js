@@ -10,6 +10,13 @@ module.exports = sequelize=>{
       type:INTEGER,
       allowNull:false
     },
+
+    // day:{
+    //   type: ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
+    //   allowNull:false
+    // },
+
+    
     // creator:{
     //   type: STRING(30),
     //   allowNull:false
