@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const val = require("../../input_validations/activity_validation.js");
+const { custom_error } = require("../../../errors.js");
 const time = date => new Date( date ).getMilliseconds();
 
 router.use( async( req, res, next ) => {
@@ -37,13 +38,15 @@ router.use( async( req, res, next ) => {
         val.timeValidation( req.body.end_time, errors, "end_time" );
         res.locals.data.end_time = req.body.end_time;
       };
-      if( !( errors.start_time && errors.end_time ) ){
-        const end_time = parseInt( req.body.end_time.replace( ":", "" ) );
-        const start_time = parseInt( req.body.start_time.replace( ":", "" ) );
-        if( end_time < start_time ) errors.end_time = [ "The end time can't be later than the start time" ];
+      if( req.body.start_time && req.body.end_time ){
+        if( !errors.start_time && !errors.end_time ){
+          const end_time = parseInt( req.body.end_time.replace( ":", "" ) );
+          const start_time = parseInt( req.body.start_time.replace( ":", "" ) );
+          if(  end_time >= start_time  ) errors.end_time = [ "The end time must be later than the start time" ];
+        };
       };
       
-    }else{      
+    }else{
       val.dayValidation( req.body.day, errors );
       val.descrValidation( req.body.description, errors );
       val.nameValidation( req.body.name, errors, "name" );
@@ -51,15 +54,16 @@ router.use( async( req, res, next ) => {
       val.tagValidation( req.body.tag, errors );
       val.timeValidation( req.body.start_time, errors, "start_time" );
       val.timeValidation( req.body.end_time, errors, "end_time" );
-      if( !( errors.start_time && errors.end_time ) ){
+      if( !errors.start_time && !errors.end_time ){
         const end_time = parseInt( req.body.end_time.replace( ":", "" ) );
         const start_time = parseInt( req.body.start_time.replace( ":", "" ) );
-        if( end_time < start_time ) errors.end_time = [ "The end time can't be later than the start time" ];
+        console.log(end_time, start_time);
+        if(  end_time <= start_time  ) errors.end_time = [ "The end time must be later than the start time" ];
       };
     };
   
     if( Object.keys( errors ).length ){
-      return res.status( 403 ).json( errors );
+      return res.status( 403 ).json( { errors:errors } );
     };
   
     next();

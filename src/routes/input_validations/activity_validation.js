@@ -26,8 +26,9 @@ function timeValidation( time, errors, dataName ){
   ) return errors[ dataName ] = [ is_mandatory( dataName ) ];
   const data = time.split( ":" );
   if(
-    data[ 0 ] > 24 || data[ 0 ] < 0
-    || data[ 1 ] > 60 || data[ 1 ] < 0
+    data.length !== 2
+    || data[ 0 ] > 24 || data[ 0 ] < 0
+    || data[ 1 ] > 59 || data[ 1 ] < 0
   ) errors[ dataName ] = [ is_mandatory( dataName ) ];
 };
 
