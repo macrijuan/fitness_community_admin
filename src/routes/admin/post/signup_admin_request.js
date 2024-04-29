@@ -6,7 +6,7 @@ const reqLimit = require("express-rate-limit");
 
 const format = require("../controllers/format.js");
 const existing = require("../controllers/existing.js");
-const { unknown, custom_error, req_limit } = require("../../../errors.js");
+const { custom_error, req_limit } = require("../../../errors.js");
 const { get_signup_count, add_signup, del_signup } = require("../post/cookie_admin_signup_req.js");
 
 require("dotenv").config();
@@ -98,8 +98,7 @@ async( req, res )=>{
         };
       });
     }catch(err){
-      console.log(err);
-      res.status(500).json(unknown);
+      next( err );
     };
   }
 );

@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { unknown, not_found } = require("../../errors.js");
+const { not_found } = require("../../errors.js");
 const { Admin } = require("../../db.js");
 const locals_setter = require("../endware/get_many_setter.js");
 const getMany = require("../endware/get_many.js");
@@ -24,8 +24,7 @@ router.delete("/delete_admin/:id",
         };
       });
     }catch(err){
-      console.log(err);
-      res.status(500).json(unknown);
+      next();
     };
   },
   (req,res,next)=>{ res.locals.model = "Admin"; res.locals.notFoundData = "Administrators"; next(); },

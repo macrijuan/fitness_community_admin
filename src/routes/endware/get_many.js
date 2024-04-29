@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { Op } = require("sequelize");
-const { not_found, unknown } = require("../../errors.js");
+const { not_found } = require("../../errors.js");
 const models = require("../../db.js");
 
 router.use( async( req, res, next )=>{

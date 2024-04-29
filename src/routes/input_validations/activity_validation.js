@@ -7,6 +7,7 @@ function nameValidation( name, errors, dataName ){
     errors[ dataName ] = [ is_mandatory( dataName ) ];
     return;
   };
+  console.log(name.length <3 || name.length > 30);
   if( name.length <3 || name.length > 30 ) errors[ dataName ] = [ strict_length( dataName, 3, 30 ) ];
 };
 

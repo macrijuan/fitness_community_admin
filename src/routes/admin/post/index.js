@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const argon2 = require("argon2");
 const reqLimit = require("express-rate-limit");
-const { unknown, not_found, req_limit, auth, custom_error } = require("../../../errors.js");
+const { not_found, req_limit, auth, custom_error } = require("../../../errors.js");
 const { Admin } = require("../../../db.js");
 const { doubleSpaceEraser } = require("../../formatter.js");
 const { get_signup, get_signup_count } = require("./cookie_admin_signup_req.js");
@@ -33,8 +33,7 @@ router.post("/post_admin",
         res.json({message:`Administrator sign up request approved.\nNow ${_admin.first_name+" "+_admin.last_name} is an administrator.`});
       });
     }catch(err){
-      console.log(err);
-      res.status(500).json(unknown);
+      next( err );
     };
   }
 );

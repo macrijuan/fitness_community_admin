@@ -21,7 +21,7 @@ router.post("/admin/sign_in",
           verify("$argon2i$v=19$m=65536,t=3,p=4$"+admin.password, req.body.password)
           .then((match)=>{
             if(match){
-              req.session.user = { id:admin.id, email:admin.email };
+              req.session.user = { id:admin.id, email:admin.email, csrf_token:'token' };
               if(admin.super_admin)req.session.user.super_admin=true;
               // req.session.csrf_token = crypto.randomBytes(64).toString('hex');
               req.session.csrf_token = 'token';

@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { custom_error, unknown } = require("../errors.js");
+const { custom_error } = require("../errors.js");
 
 router.use((req, res, next) => {
   try{
@@ -10,8 +10,7 @@ router.use((req, res, next) => {
       res.status(403).json( custom_error( "auth", "Try reloading the page. Request not authorized." ) );
     };
   }catch(err){
-    console.log(err);
-    res.status(500).json(unknown);
+    next( err );
   };
 });
 

@@ -55,10 +55,15 @@ const identityVal = ( identity, errors )=>{
   if( !errors.identity.length )delete errors.identity;
 };
 
+const super_adminVal = ( data, errors ) => {
+  if( !( data === "true" || data === "false" ) ) errors.super_admin = [ is_mandatory( "super_admin" ) ];
+};
+
 
 module.exports = {
   emailVal,
   passwordVal,
   nameVal,
-  identityVal
+  identityVal,
+  super_adminVal
 };
