@@ -8,26 +8,32 @@ const getMany = require("../endware/get_many.js");
 router.delete("/delete_admin/:id",
   async( req, res, next )=>{
     try{
-      Admin.findByPk(req.params.id)
-      .then(async admin=>{
-        if(admin){
-          admin.destroy().then(()=>{
-            if(req.query.single){
-              res.json({deleted:`The Administrator with the email ${admin.email} has been deleted.`});
-            }else{
-              locals_setter( res, "Admin", "Administrators");
-              next();
+      const admin = await Admin.findByPk( req.params.id );
+      if(admin){
+        admin.destroy().then( () => {
+          if(req.query.single){
+            res.json({deleted:`The Administrator with the email ${admin.email} has been deleted.`});
+          }else{
+            res.locals.data = {
+              attributes:{ exclude:[  'password', 'reset_token' ] },
+              through:{
+                attributes:[]
+              },
+              where:{
+                [ Op.not ]:{ super_admin:true }
+              }
             };
-          });
-        }else{
-          res.status(404).json( not_found( "Administrator" ) );
-        };
-      });
+            locals_setter( res, "Admin", "Administrators");
+            next();
+          };
+        } );
+      }else{
+        res.status(404).json( not_found( "Administrator" ) );
+      };
     }catch(err){
-      next();
+      next( err );
     };
   },
-  (req,res,next)=>{ res.locals.model = "Admin"; res.locals.notFoundData = "Administrators"; next(); },
   getMany
 );
 

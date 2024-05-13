@@ -1,4 +1,4 @@
-const { STRING, INTEGER, ENUM, BOOLEAN } = require("sequelize");
+const { STRING, INTEGER, ENUM, BOOLEAN, UUID, UUIDV1 } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define('user',{
@@ -39,6 +39,11 @@ module.exports = (sequelize) => {
       type:BOOLEAN,
       defaultValue:false,
       allowNull:false
+    },
+    reset_token:{
+      type: UUID,
+      defaultValue:UUIDV1,
+      unique:true
     }
   });
 };

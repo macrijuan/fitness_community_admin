@@ -42,7 +42,7 @@ async( req, res )=>{
       },
       signup_code:res.locals.signup_code,
     });
-    // console.log(req.session.cookie.maxAge);
+
     setTimeout(() => {
       del_signup( res.locals.signup_code );
     }, 3600000);
@@ -60,13 +60,13 @@ async( req, res )=>{
       const transporter = nodemailer.createTransport({
         host: EMAIL_HOST,
         port: parseInt(EMAIL_PORT),//465
-        secure: false, // true for 465, false for other ports
+        secure: true, // true for 465, false for other ports
         auth: {
           user: EMAIL_USER,
           pass: EMAIL_HOST_P
         },
         tls:{
-          rejectUnauthorized:false
+          rejectUnauthorized:true
         }
       });
       

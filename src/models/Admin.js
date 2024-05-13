@@ -37,12 +37,18 @@ module.exports = sequelize => {
       allowNull:false
     },
     created: {
-      type: DATEONLY,
+      type:DATEONLY,
       defaultValue: new Date().toISOString()
     },
     updated: {
-      type: DATEONLY,
+      type:DATEONLY,
       defaultValue: new Date().toISOString()
+    },
+    reset_token:{
+      type:STRING,
+      validate:{
+        len:[ 6, 6 ]
+      }
     }
   },{
     timestamps:false

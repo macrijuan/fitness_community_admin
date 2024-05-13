@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 router.get("/get_admins",
   ( req=null, res, next )=>{
     res.locals.data = {
-      attributes:{ exclude:[  'password' ] },
+      attributes:{ exclude:[  'password', 'reset_token' ] },
       through:{
         attributes:[]
       },

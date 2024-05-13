@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const { verify } = require("argon2");
-const crypto = require("crypto");
-const { unknown, sign_in_not_found, custom_error, not_found } = require("../../../errors.js");
+// const crypto = require("crypto");
+const { sign_in_not_found, not_found } = require("../../../errors.js");
 const { Admin } = require("../../../db.js");
 
 
@@ -28,7 +28,8 @@ router.post("/admin/sign_in",
               res.setHeader('X-Csrf-Token', req.session.csrf_token);
               res.setHeader('Access-Control-Expose-Headers', 'X-Csrf-Token');
               delete admin.password;
-              res.json(admin);
+              delete admin. reset_token;
+              res.json( admin );
             }else{
               res.status(404).json( sign_in_not_found("administrator") );
             };
@@ -38,8 +39,7 @@ router.post("/admin/sign_in",
         };
       });
     }catch(err){
-      console.log(err);
-      res.status(500).json(unknown);
+     
     };
   }
 );
