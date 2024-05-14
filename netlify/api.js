@@ -1,54 +1,91 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const session = require('express-session');
-const app = express();
-const routes = require("../../src/routes/index.js");
-const serverless = require("serverless-http");
+const rateLimit = require('express-rate-limit');
 const bodyParser = require("body-parser");
+const server = express();
 
-const { conn } = require("../../src/db.js");
+const routes = require("../src/routes/index.js");
 const key = require("../src/routes/server_key.js");
+const sign_in = require("../src/routes/admin/post/sign_in.js");
+const signup_admin_req = require("../src/routes/admin/post/signup_admin_request.js");
+const reset_password = require("../src/routes/admin/update/reset_password.js");
+const authenticate = require("../src/routes/authenticate.js");
+const { unknown, custom_error } = require("../src/errors.js");
 
-server.use(( req, res, next )=>{
-  if(!req.secure){
-    console.log(req);
-    res.status(403).json(custom_error( "notSecure", "Connection is not secure." ));
-  }else{
+server.name = 'API';
+
+const limitReached = {};
+
+
+server.use(
+  rateLimit({
+    windowMs: 30000,
+    max: 500,
+    handler: (req, res ) => {
+      if( !limitReached[ req.ip ] ){
+        limitReached[ req.ip ] = true;
+        setTimeout(()=>{
+          delete limitReached[ req.ip ];
+        }, req.rateLimit.resetTime - Date.now() );
+        return res.status( 429 ).json( custom_error( 'req_limit', 'Too many requests, please try again later.' ) )
+      };
+      console.log('Request limit reached for IP:', req.ip);
+    }
+  })
+);
+
+  
+server.use(async (req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    console.log(`${req.method} ${res.statusCode} ${req.path} - ${Date.now() - start}ms`);
+    console.log("__________________________");
+  });
+  setTimeout(()=>{
     next();
-  };
+  }, 700 );
 });
 
-server.use(session({
+server.use(
+  session({
   secret: key(),
+  // secret: "secret_key",
   resave: false,
   saveUninitialized: false,
+  name: 'fitcom.sid_encoded$',
   cookie: {
-    maxAge: 3600000,
-    secure: true,
-  }
-}));
+    maxAge: 7200000,//2hs
+    secure: false,
+    httpOnly: false,
+    sameSite: 'strict',
+    }
+  })
+);
 
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-app.use(bodyParser.json({ limit: '50mb' }));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json({ limit: '50mb' }));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'YOUR ORIGIN');
+server.use(( req, res, next ) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8000');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, X-Csrf-Token');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   next();
 });
 
-app.use("/.netlify/functions/api",
-(req, res, next)=>{
-  conn.authenticate().then(()=>{next();}).catch(()=>{res.send("DB connection failed.");});
-},
-routes);
+server.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, X-Csrf-Token');
+  res.status(200).end();
+});
 
-app.use((err, req, res, next) => {
-  const status = err.status || 500;
-  const message = err.message || err;
-  console.error(err);
-  res.status(status).send(message);
+server.use( '/.netlify/functions/api', sign_in, signup_admin_req, reset_password, authenticate, routes );//
+
+server.use(( err, req, res, next ) => {
+  console.error( err );
+  console.log("ERROR ENDWARE");
+  res.status( 500 ).json( unknown );
 });
 
 module.exports.handler = serverless(app);
