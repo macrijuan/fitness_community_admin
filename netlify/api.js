@@ -88,4 +88,4 @@ server.use(( err, req, res, next ) => {
   res.status( 500 ).json( unknown );
 });
 
-module.exports.handler = serverless(app);
+module.exports.handler = serverless(server);
