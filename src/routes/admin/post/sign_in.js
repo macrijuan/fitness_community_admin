@@ -44,4 +44,6 @@ router.post("/admin/sign_in",
   }
 );
 
+router.get( "/", ( req, res )=>{ res.send("APP IS RUNNING") } );
+
 module.exports = router;
