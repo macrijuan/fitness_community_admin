@@ -80,7 +80,7 @@ server.options('*', (req, res) => {
   res.status(200).end();
 });
 
-server.use( '/.netlify/functions/api', sign_in, signup_admin_req, reset_password, authenticate, routes );//
+server.use( '/.netlify/functions/api', sign_in, signup_admin_req, reset_password, authenticate, routes );
 
 server.use(( err, req, res, next ) => {
   console.error( err );
