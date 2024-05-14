@@ -7,10 +7,10 @@ const server = express();
 
 const routes = require("../src/routes/index.js");
 const key = require("../src/routes/server_key.js");
-const sign_in = require("../src/routes/admin/post/sign_in.js");
-const signup_admin_req = require("../src/routes/admin/post/signup_admin_request.js");
-const reset_password = require("../src/routes/admin/update/reset_password.js");
-const authenticate = require("../src/routes/authenticate.js");
+// const sign_in = require("../src/routes/admin/post/sign_in.js");
+// const signup_admin_req = require("../src/routes/admin/post/signup_admin_request.js");
+// const reset_password = require("../src/routes/admin/update/reset_password.js");
+// const authenticate = require("../src/routes/authenticate.js");
 const { unknown, custom_error } = require("../src/errors.js");
 
 server.name = 'API';
@@ -80,7 +80,8 @@ server.options('*', (req, res) => {
   res.status(200).end();
 });
 
-server.use( '/.netlify/functions/api', sign_in, signup_admin_req, reset_password, authenticate, routes );
+server.use( '/.netlify/functions/api', routes );
+//sign_in, signup_admin_req, reset_password, authenticate, routes
 
 
 
