@@ -38,7 +38,10 @@ server.use(
         return res.status( 429 ).json( custom_error( 'req_limit', 'Too many requests, please try again later.' ) )
       };
       console.log('Request limit reached for IP:', req.ip);
-    }
+    },
+    keyGenerator: (req) => {
+      return req.ip;
+    },
   })
 );
 
