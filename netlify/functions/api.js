@@ -41,6 +41,7 @@ server.use(
     },
     keyGenerator: (req) => {
       const ip = req.headers['x-forwarded-for']?.split(',')[0].trim();
+      console.log( "ip: ", ip );
       return ip;
     }
   })
