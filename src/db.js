@@ -41,7 +41,8 @@ User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false } );
 Routine.belongsToMany( User, { through:"user_routines", timestamps:false } );
 User.belongsToMany( Routine, { through:"user_routines", timestamps:false } );
 
-console.log(sequelize.models);
+console.log("sequelize: ");
+console.log(sequelize);
 
 module.exports = {
   ...sequelize.models,

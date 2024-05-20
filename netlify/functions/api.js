@@ -92,5 +92,3 @@ server.use(( err, req, res, next ) => {
 });
 
 module.exports.handler = serverless(server);
-
-console.log("APP IS UP!");
