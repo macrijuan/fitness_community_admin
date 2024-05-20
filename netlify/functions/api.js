@@ -40,8 +40,8 @@ server.use(
       console.log('Request limit reached for IP:', req.ip);
     },
     keyGenerator: (req) => {
-      return req.ip;
-    },
+      return req.ip = req.headers['x-forwarded-for'];
+    }
   })
 );
 
