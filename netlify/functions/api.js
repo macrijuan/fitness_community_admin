@@ -17,6 +17,7 @@ server.name = 'API';
 
 const limitReached = {};
 
+server.set('trust proxy', true);
 
 server.use(
   rateLimit({
