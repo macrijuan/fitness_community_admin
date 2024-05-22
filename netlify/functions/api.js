@@ -11,11 +11,11 @@ const key = require("../../src/routes/server_key.js");
 // const signup_admin_req = require("../src/routes/admin/post/signup_admin_request.js");
 // const reset_password = require("../src/routes/admin/update/reset_password.js");
 // const authenticate = require("../src/routes/authenticate.js");
-const { unknown, custom_error } = require("../../src/errors.js");
+const { unknown, req_limit } = require("../../src/errors.js");
 
 server.name = 'API';
 
-const limitReached = {};
+const limitReached = new Set();
 
 server.set('trust proxy', true);
 
@@ -24,12 +24,12 @@ server.use(
     windowMs: 30000,
     max: 3,
     handler: (req, res ) => {
-      if( !limitReached[ req.ip ] ){
-        limitReached[ req.ip ] = true;
+      if( !limitReached.has( req.ip ) ){
+        limitReached.add( req.ip );
         setTimeout(()=>{
-          delete limitReached[ req.ip ];
+          limitReached.delete( req.ip );
         }, req.rateLimit.resetTime - Date.now() );
-        return res.status( 429 ).json( custom_error( 'req_limit', 'Too many requests, please try again later.' ) )
+        return res.status( 429 ).json( req_limit );
       };
       console.log('Request limit reached for IP:', req.ip);
     },
