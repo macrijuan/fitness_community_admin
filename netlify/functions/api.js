@@ -33,6 +33,7 @@ server.use(
         return res.status( 429 ).json( req_limit );
       };
       console.log('Request limit reached for IP:', req.ip);
+      return;
     },
     keyGenerator: (req) => {
       req.ip = req.headers['x-forwarded-for']?.split(',')[0].trim();
