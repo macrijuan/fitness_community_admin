@@ -19,12 +19,6 @@ const limitReached = {};
 
 server.set('trust proxy', true);
 
-server.use((req, res, next) => {
-  console.log('Client IP from x-forwarded-for header:', req.headers['x-forwarded-for']);
-  console.log('Client IP from req.ip:', req.ip);
-  next();
-});
-
 server.use(
   rateLimit({
     windowMs: 30000,
