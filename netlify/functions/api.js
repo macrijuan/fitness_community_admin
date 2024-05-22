@@ -28,7 +28,7 @@ server.use((req, res, next) => {
 server.use(
   rateLimit({
     windowMs: 30000,
-    max: 500,
+    max: 3,
     handler: (req, res ) => {
       if( !limitReached[ req.ip ] ){
         limitReached[ req.ip ] = true;

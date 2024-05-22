@@ -6,6 +6,6 @@ const activity = require("./activity/index.js");
 
 router.use( admin, activity );
 
-router.get( "/", ( req, res )=>{ console.log( "ip passed to routes:", req.ip ); res.send("APP IS RUNNING") } );
+router.get( "/", ( req, res )=>{ res.send("APP IS RUNNING") } );
 
 module.exports = router;
