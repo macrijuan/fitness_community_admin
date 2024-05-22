@@ -25,6 +25,7 @@ server.use(
     max: 3,
     handler: (req, res ) => {
       if( !limitReached.has( req.ip ) ){
+        console.log("add limitted ip");
         limitReached.add( req.ip );
         setTimeout(()=>{
           limitReached.delete( req.ip );
