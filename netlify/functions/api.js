@@ -63,7 +63,7 @@ server.use(
   name: 'fitcom.sid_encoded$',
   cookie: {
     maxAge: 7200000,//2hs
-    secure: false,
+    secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
     httpOnly: false,
     sameSite: 'strict',
     }
