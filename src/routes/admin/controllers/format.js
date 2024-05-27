@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 
 const { emailVal, passwordVal, nameVal, identityVal, super_adminVal } = require("../../input_validations/admin_validation.js");
-const { multi_errors, custom_error, unknown } = require("../../../errors.js");
+const { multi_errors, unknown } = require("../../../errors.js");
 
 router.use(async( req, res, next )=>{
   const errors = {};

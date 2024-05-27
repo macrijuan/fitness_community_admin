@@ -45,7 +45,7 @@ module.exports = sequelize => {
       defaultValue: new Date().toISOString()
     },
     reset_token:{
-      type:STRING,
+      type:STRING(6),
       validate:{
         len:[ 6, 6 ]
       }

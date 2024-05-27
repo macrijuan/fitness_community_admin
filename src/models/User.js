@@ -41,9 +41,10 @@ module.exports = (sequelize) => {
       allowNull:false
     },
     reset_token:{
-      type: UUID,
-      defaultValue:UUIDV1,
-      unique:true
+      type:STRING,
+      validate:{
+        len:[ 6, 6 ]
+      }
     }
   });
 };

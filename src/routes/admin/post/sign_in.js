@@ -3,7 +3,7 @@ const router = Router();
 const { verify } = require("argon2");
 // const crypto = require("crypto");
 const { sign_in_not_found, not_found } = require("../../../errors.js");
-const { Admin } = require("../../../db.js");
+const { Admin, User } = require("../../../db.js");
 
 
 
@@ -44,6 +44,22 @@ router.post("/admin/sign_in",
   }
 );
 
-router.get( "/", ( req, res )=>{ res.send("APP IS RUNNING") } );
+router.get( "/", async( req, res, next )=>{ 
+  try{
+    const userTest = await User.create({
+      email:"some@email.com",
+      password:"$omePassw0rd",
+      first_name:"TEST NAME",
+      last_name:"TEST LASTNAME",
+      identity:12341233,
+      nickname:"whatever",
+      sex:"male",
+      age:20
+    });
+    res.json(userTest);
+  }catch(err){
+    next( err );
+  };
+ } );
 
 module.exports = router;
