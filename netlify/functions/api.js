@@ -1,10 +1,11 @@
 const serverless = require("serverless-http");
 const express = require("express");
 const session = require('express-session');
+const { createClient } = require('redis');
+const RedisStore = require('connect-redis')(session);
 const rateLimit = require('express-rate-limit');
 const bodyParser = require("body-parser");
-const RedisStore = require('connect-redis')(session);
-const { createClient } = require('redis');
+
 const server = express();
 
 const routes = require("../../src/routes/index.js");
