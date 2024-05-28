@@ -3,6 +3,8 @@ const express = require("express");
 const session = require('express-session');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require("body-parser");
+const RedisStore = require('connect-redis')(session);
+const { createClient } = require('redis');
 const server = express();
 
 const routes = require("../../src/routes/index.js");
@@ -54,19 +56,32 @@ server.use(async (req, res, next) => {
   }, 700 );
 });
 
+const redisClient = createClient({
+  password: process.env.REDIS_PASSWORD,
+  socket: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+  }
+});
+
+redisClient.on('error', (err) => {
+  console.error('Redis error:', err);
+});
+
 server.use(
   session({
-  secret: key(),
-  // secret: "secret_key",
-  resave: false,
-  saveUninitialized: false,
-  name: 'fitcom.sid_encoded$',
-  cookie: {
-    maxAge: 7200000,//2hs
-    secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
-    httpOnly: true,
-    sameSite: 'strict',
-    }
+    store: new RedisStore({ client: redisClient }),
+    secret: key(),
+    // secret: "secret_key",
+    resave: false,
+    saveUninitialized: false,
+    name: 'fitcom.sid_encoded$',
+    cookie: {
+      maxAge: 7200000,//2hs
+      secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
+      httpOnly: true,
+      sameSite: 'strict',
+      }
   })
 );
 
