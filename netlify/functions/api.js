@@ -2,7 +2,6 @@ const serverless = require("serverless-http");
 const express = require("express");
 const session = require('express-session');
 const { createClient } = require('redis');
-const RedisStore = require('connect-redis')(session);
 const rateLimit = require('express-rate-limit');
 const bodyParser = require("body-parser");
 
@@ -64,14 +63,49 @@ const redisClient = createClient({
       port: process.env.REDIS_PORT
   }
 });
-
 redisClient.on('error', (err) => {
   console.error('Redis error:', err);
 });
 
+redisClient.connect().catch(console.error);
+
+class RedisStore extends session.Store {
+  constructor(redisClient) {
+    super();
+    this.redisClient = redisClient;
+  }
+
+  async get(sid, callback) {
+    try {
+      const data = await this.redisClient.get(sid);
+      callback(null, data ? JSON.parse(data) : null);
+    } catch (err) {
+      callback(err);
+    }
+  }
+
+  async set(sid, session, callback) {
+    try {
+      await this.redisClient.set(sid, JSON.stringify(session));
+      callback(null);
+    } catch (err) {
+      callback(err);
+    }
+  }
+
+  async destroy(sid, callback) {
+    try {
+      await this.redisClient.del(sid);
+      callback(null);
+    } catch (err) {
+      callback(err);
+    }
+  }
+};
+
 server.use(
   session({
-    store: new RedisStore({ client: redisClient }),
+    store: new RedisStore(redisClient),
     // secret: key(),
     secret: process.env.SESSION_KEY,
     resave: false,
