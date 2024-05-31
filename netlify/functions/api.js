@@ -75,7 +75,7 @@ async function getAllKeys() {
 
   try {
       do {
-          const [newCursor, keys] = await redisClient.scan(cursor);
+          const { cursor: newCursor, keys } = await redisClient.scan(cursor);
           cursor = newCursor;
           allKeys = allKeys.concat(keys);
       } while (cursor !== '0');
