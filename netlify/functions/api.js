@@ -1,7 +1,7 @@
 const serverless = require("serverless-http");
 const express = require("express");
+const redisClient = require("../../src/session.js");
 const session = require('express-session');
-const { createClient } = require('redis');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require("body-parser");
 
@@ -53,46 +53,6 @@ server.use(async (req, res, next) => {
   setTimeout(()=>{
     next();
   }, 700 );
-});
-
-const redisClient = createClient({
-  password: process.env.REDIS_PASSWORD,
-  socket: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT
-  }
-});
-
-redisClient.connect().catch(console.error);
-
-redisClient.on('error', (err) => {
-  console.error('Error connecting to Redis', err);
-});
-
-async function getAllKeys() {
-  try {
-    const key1 = await redisClient.hGetAll('0EpLSuCxj_gaLLdeFGD3okaeGDGpbNju');
-    const key2 = await redisClient.hGetAll('q532RDMmio4YAFxGiT-n5c1GOn5pxYkN');
-    const key3 = await redisClient.hGetAll('1hpkYmPfrxV37yrBtqFBdnRebbm6i4pc');
-    console.log( key1 );
-    console.log( key2 );
-    console.log( key3 );
-  } catch (err) {
-    console.error('Error retrieving keys:', err);
-    const key1 = await redisClient.get('0EpLSuCxj_gaLLdeFGD3okaeGDGpbNju');
-    const key2 = await redisClient.get('q532RDMmio4YAFxGiT-n5c1GOn5pxYkN');
-    const key3= await redisClient.get('1hpkYmPfrxV37yrBtqFBdnRebbm6i4pc');
-    console.log( key1 );
-    console.log( key2 );
-    console.log( key3 );
-  } finally {
-    redisClient.quit();
-  };
-};
-
-redisClient.on('connect', async() => {
-  console.log('Connected to Redis');
-  await getAllKeys();
 });
 
 class RedisStore extends session.Store {

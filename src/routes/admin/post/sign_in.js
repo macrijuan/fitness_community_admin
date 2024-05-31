@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const router = Router();
+const redisClient = require("../../../session.js");
 const { verify } = require("argon2");
 // const crypto = require("crypto");
 const { sign_in_not_found, not_found } = require("../../../errors.js");
@@ -43,5 +44,17 @@ router.post("/admin/sign_in",
     };
   }
 );
+
+router.get( "/test", async( req, res, next ) => {
+  try {
+    const key1 = await redisClient.scan('0');
+    console.log( key1 );
+    res.json( { value: key1 } );
+  } catch (err) {
+    next( err );
+  } finally {
+    redisClient.quit();
+  };
+} );
 
 module.exports = router;
