@@ -24,7 +24,7 @@ server.set('trust proxy', true);
 server.use(
   rateLimit({
     windowMs: 10000,
-    max: 3,
+    max: 10,
     handler: (req, res ) => {
       if( !limitReached.has( req.ip ) ){
         console.log("add limitted ip");
