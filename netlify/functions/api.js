@@ -101,7 +101,7 @@ server.use(
     saveUninitialized: false,
     name: 'fitcom.sid_encoded$',
     cookie: {
-      maxAge: 15000,//2hs
+      maxAge: 72000000,//2hs
       secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
       httpOnly: true,
       sameSite: 'strict',
