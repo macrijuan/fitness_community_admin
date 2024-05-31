@@ -69,11 +69,6 @@ redisClient.on('error', (err) => {
   console.error('Error connecting to Redis', err);
 });
 
-redisClient.on('connect', () => {
-  console.log('Connected to Redis');
-  getAllKeys();
-});
-
 async function getAllKeys() {
   let cursor = '0';
   let allKeys = [];
@@ -112,6 +107,11 @@ async function getAllKeys() {
   console.log('All keys and values:', keyValues);
   redisClient.quit();
 };
+
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+  getAllKeys();
+});
 
 class RedisStore extends session.Store {
   constructor(redisClient) {
