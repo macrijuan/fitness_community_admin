@@ -44,54 +44,6 @@ server.use(
   })
 );
 
-// server.use(async (req, res, next) => {
-//   const start = Date.now();
-//   res.on('finish', () => {
-//     console.log(`${req.method} ${res.statusCode} ${req.path} - ${Date.now() - start}ms`);
-//     console.log("__________________________");
-//   });
-//   setTimeout(()=>{
-//     next();
-//   }, 700 );
-// });
-
-// class RedisStore extends session.Store {
-//   constructor(redisClient) {
-//     super();
-//     this.redisClient = redisClient;
-//   }
-
-//   async get(sid, callback) {
-//     try {
-//       const data = await this.redisClient.get(sid);
-//       console.log("session gotten: ");
-//       console.log(data);
-//       callback(null, data ? JSON.parse(data) : null);
-//     } catch (err) {
-//       callback(err);
-//     }
-//   }
-
-//   async set(sid, session, callback) {
-//     try {
-//       await this.redisClient.set(sid, JSON.stringify(session));
-//       console.log("Session created or updated.");
-//       callback(null);
-//     } catch (err) {
-//       callback(err);
-//     }
-//   }
-
-//   async destroy(sid, callback) {
-//     try {
-//       await this.redisClient.del(sid);
-//       callback(null);
-//     } catch (err) {
-//       callback(err);
-//     }
-//   }
-// };
-
 const customStore = {
   async get(key, callback) {
     try {
@@ -166,3 +118,51 @@ server.use(( err, req, res, next ) => {
 });
 
 module.exports.handler = serverless(server);
+
+// server.use(async (req, res, next) => {
+//   const start = Date.now();
+//   res.on('finish', () => {
+//     console.log(`${req.method} ${res.statusCode} ${req.path} - ${Date.now() - start}ms`);
+//     console.log("__________________________");
+//   });
+//   setTimeout(()=>{
+//     next();
+//   }, 700 );
+// });
+
+// class RedisStore extends session.Store {
+//   constructor(redisClient) {
+//     super();
+//     this.redisClient = redisClient;
+//   }
+
+//   async get(sid, callback) {
+//     try {
+//       const data = await this.redisClient.get(sid);
+//       console.log("session gotten: ");
+//       console.log(data);
+//       callback(null, data ? JSON.parse(data) : null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   }
+
+//   async set(sid, session, callback) {
+//     try {
+//       await this.redisClient.set(sid, JSON.stringify(session));
+//       console.log("Session created or updated.");
+//       callback(null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   }
+
+//   async destroy(sid, callback) {
+//     try {
+//       await this.redisClient.del(sid);
+//       callback(null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   }
+// };
