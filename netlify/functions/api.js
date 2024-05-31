@@ -92,12 +92,12 @@ async function getAllKeys() {
       console.error('Error retrieving keys and values:', err);
   } finally {
       redisClient.quit();
-  }
+  };
 };
 
-redisClient.on('connect', () => {
+redisClient.on('connect', async() => {
   console.log('Connected to Redis');
-  getAllKeys();
+  await getAllKeys();
 });
 
 class RedisStore extends session.Store {
