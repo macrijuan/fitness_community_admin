@@ -23,7 +23,7 @@ server.set('trust proxy', true);
 
 server.use(
   rateLimit({
-    windowMs: 900000,
+    windowMs: 10000,
     max: 3,
     handler: (req, res ) => {
       if( !limitReached.has( req.ip ) ){
