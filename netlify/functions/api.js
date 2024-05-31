@@ -70,37 +70,24 @@ redisClient.on('error', (err) => {
 });
 
 async function getAllKeys() {
-;  console.log('Fetching all keys...');
-  let cursor = '0';
-  let allKeys = [];
-
   try {
-    do {
-      const { cursor: newCursor, keys } = await redisClient.scan(cursor);
-      console.log('Cursor:', cursor, 'New Cursor:', newCursor, 'Keys:', keys);
-      cursor = newCursor;
-      allKeys = allKeys.concat(keys);
-    } while (cursor !== '0' && keys.length > 0);
-
-    if (allKeys.length === 0) {
-      console.log('No keys found in the Redis database.');
-    } else {
-      console.log('All keys retrieved:', allKeys);
-      
-      const keyValues = {};
-
-      for (const key of allKeys) {
-        const value = await redisClient.get(key);
-        keyValues[key] = value;
-      }
-
-      console.log('All keys and values:', keyValues);
-    }
+    const key1 = await redisClient.hGetAll('0EpLSuCxj_gaLLdeFGD3okaeGDGpbNju');
+    const key2 = await redisClient.hGetAll('q532RDMmio4YAFxGiT-n5c1GOn5pxYkN');
+    const key3 = await redisClient.hGetAll('1hpkYmPfrxV37yrBtqFBdnRebbm6i4pc');
+    console.log( key1 );
+    console.log( key2 );
+    console.log( key3 );
   } catch (err) {
     console.error('Error retrieving keys:', err);
+    const key1 = await redisClient.get('0EpLSuCxj_gaLLdeFGD3okaeGDGpbNju');
+    const key2 = await redisClient.get('q532RDMmio4YAFxGiT-n5c1GOn5pxYkN');
+    const key3= await redisClient.get('1hpkYmPfrxV37yrBtqFBdnRebbm6i4pc');
+    console.log( key1 );
+    console.log( key2 );
+    console.log( key3 );
   } finally {
     redisClient.quit();
-  }
+  };
 };
 
 redisClient.on('connect', async() => {
