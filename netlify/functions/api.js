@@ -81,6 +81,8 @@ async function getAllKeys() {
       allKeys = allKeys.concat(keys);
     } while (cursor !== '0');
 
+    console.log('All keys retrieved:', allKeys);
+
     const keyValues = {};
 
     for (const key of allKeys) {
