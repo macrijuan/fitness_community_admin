@@ -44,7 +44,6 @@ server.use(
   })
 );
 
-  
 server.use(async (req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
@@ -65,6 +64,54 @@ const redisClient = createClient({
 });
 
 redisClient.connect().catch(console.error);
+
+redisClient.on('error', (err) => {
+  console.error('Error connecting to Redis', err);
+});
+
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+  getAllKeys();
+});
+
+async function getAllKeys() {
+  let cursor = '0';
+  let allKeys = [];
+
+  do {
+      const reply = await new Promise((resolve, reject) => {
+        redisClient.scan(cursor, (err, res) => {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(res);
+              }
+          });
+      });
+
+      cursor = reply[0];
+      const keys = reply[1];
+      allKeys = allKeys.concat(keys);
+  } while (cursor !== '0');
+
+  const keyValues = {};
+
+  for (const key of allKeys) {
+      const value = await new Promise((resolve, reject) => {
+        redisClient.get(key, (err, res) => {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(res);
+              }
+          });
+      });
+      keyValues[key] = value;
+  }
+
+  console.log('All keys and values:', keyValues);
+  redisClient.quit();
+};
 
 class RedisStore extends session.Store {
   constructor(redisClient) {
