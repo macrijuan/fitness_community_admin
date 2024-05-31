@@ -44,22 +44,4 @@ router.post("/admin/sign_in",
   }
 );
 
-router.get( "/", async( req, res, next )=>{ 
-  try{
-    const userTest = await User.create({
-      email:"some@email.com",
-      password:"$omePassw0rd",
-      first_name:"TEST NAME",
-      last_name:"TEST LASTNAME",
-      identity:12341233,
-      nickname:"whatever",
-      sex:"male",
-      age:20
-    });
-    res.json(userTest);
-  }catch(err){
-    next( err );
-  };
- } );
-
 module.exports = router;
