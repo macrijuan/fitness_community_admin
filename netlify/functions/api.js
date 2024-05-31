@@ -64,6 +64,8 @@ class RedisStore extends session.Store {
   async get(sid, callback) {
     try {
       const data = await this.redisClient.get(sid);
+      console.log("data: ");
+      console.log(data);
       callback(null, data ? JSON.parse(data) : null);
     } catch (err) {
       callback(err);
