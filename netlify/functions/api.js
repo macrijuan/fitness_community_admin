@@ -64,7 +64,7 @@ class RedisStore extends session.Store {
   async get(sid, callback) {
     try {
       const data = await this.redisClient.get(sid);
-      console.log("data: ");
+      console.log("session gotten: ");
       console.log(data);
       callback(null, data ? JSON.parse(data) : null);
     } catch (err) {
@@ -75,6 +75,7 @@ class RedisStore extends session.Store {
   async set(sid, session, callback) {
     try {
       await this.redisClient.set(sid, JSON.stringify(session));
+      console.log("Session created or updated.");
       callback(null);
     } catch (err) {
       callback(err);
@@ -100,7 +101,7 @@ server.use(
     saveUninitialized: false,
     name: 'fitcom.sid_encoded$',
     cookie: {
-      maxAge: 7200000,//2hs
+      maxAge: 15000,//2hs
       secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
       httpOnly: true,
       sameSite: 'strict',
