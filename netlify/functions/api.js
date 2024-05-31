@@ -74,24 +74,25 @@ async function getAllKeys() {
   let allKeys = [];
 
   try {
-      do {
-          const { cursor: newCursor, keys } = await redisClient.scan(cursor);
-          cursor = newCursor;
-          allKeys = allKeys.concat(keys);
-      } while (cursor !== '0');
+    do {
+      const { cursor: newCursor, keys } = await redisClient.scan(cursor);
+      cursor = newCursor;
+      allKeys = allKeys.concat(keys);
+    } while (cursor !== '0');
 
-      const keyValues = {};
+    const keyValues = {};
 
-      for (const key of allKeys) {
-          const value = await redisClient.get(key);
-          keyValues[key] = value;
-      }
+    for (const key of allKeys) {
+      const value = await redisClient.get(key);
+      keyValues[key] = value;
+    }
 
-      console.log('All keys and values:', keyValues);
+    console.log('All keys and values:', keyValues);
   } catch (err) {
-      console.error('Error retrieving keys and values:', err);
+    console.error('Error retrieving keys and values:', err);
   } finally {
-      redisClient.quit();
+    redisClient.quit();
+    console.log("getAllKeys ended.");
   };
 };
 
