@@ -44,16 +44,16 @@ server.use(
   })
 );
 
-server.use(async (req, res, next) => {
-  const start = Date.now();
-  res.on('finish', () => {
-    console.log(`${req.method} ${res.statusCode} ${req.path} - ${Date.now() - start}ms`);
-    console.log("__________________________");
-  });
-  setTimeout(()=>{
-    next();
-  }, 700 );
-});
+// server.use(async (req, res, next) => {
+//   const start = Date.now();
+//   res.on('finish', () => {
+//     console.log(`${req.method} ${res.statusCode} ${req.path} - ${Date.now() - start}ms`);
+//     console.log("__________________________");
+//   });
+//   setTimeout(()=>{
+//     next();
+//   }, 700 );
+// });
 
 // class RedisStore extends session.Store {
 //   constructor(redisClient) {
