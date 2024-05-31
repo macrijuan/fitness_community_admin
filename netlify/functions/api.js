@@ -70,33 +70,37 @@ redisClient.on('error', (err) => {
 });
 
 async function getAllKeys() {
-  console.log('Fetching all keys...');
+;  console.log('Fetching all keys...');
   let cursor = '0';
   let allKeys = [];
 
   try {
     do {
       const { cursor: newCursor, keys } = await redisClient.scan(cursor);
+      console.log('Cursor:', cursor, 'New Cursor:', newCursor, 'Keys:', keys);
       cursor = newCursor;
       allKeys = allKeys.concat(keys);
-    } while (cursor !== '0');
+    } while (cursor !== '0' && keys.length > 0);
 
-    console.log('All keys retrieved:', allKeys);
+    if (allKeys.length === 0) {
+      console.log('No keys found in the Redis database.');
+    } else {
+      console.log('All keys retrieved:', allKeys);
+      
+      const keyValues = {};
 
-    const keyValues = {};
+      for (const key of allKeys) {
+        const value = await redisClient.get(key);
+        keyValues[key] = value;
+      }
 
-    for (const key of allKeys) {
-      const value = await redisClient.get(key);
-      keyValues[key] = value;
+      console.log('All keys and values:', keyValues);
     }
-
-    console.log('All keys and values:', keyValues);
   } catch (err) {
-    console.error('Error retrieving keys and values:', err);
+    console.error('Error retrieving keys:', err);
   } finally {
     redisClient.quit();
-    console.log("getAllKeys ended.");
-  };
+  }
 };
 
 redisClient.on('connect', async() => {
