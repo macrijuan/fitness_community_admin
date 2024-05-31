@@ -140,7 +140,7 @@ server.use(
     cookie: {
       maxAge: 7200000,//2hs
       secure: true,//CHANGE IN DEVELOPMENT TO false!!!!!!!!!!!!!!!!!!
-      httpOnly: false,
+      httpOnly: true,
       sameSite: 'strict',
       }
   })
