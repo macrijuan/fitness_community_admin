@@ -92,6 +92,33 @@ class RedisStore extends session.Store {
   }
 };
 
+// const customStore = {
+//   async get(key, callback) {
+//     try {
+//       const data = await redisClient.get(key);
+//       callback(null, data ? JSON.parse(data) : null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   },
+//   async set(key, session, callback) {
+//     try {
+//       await redisClient.set(key, JSON.stringify(session));
+//       callback(null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   },
+//   async destroy(key, callback) {
+//     try {
+//       await redisClient.del(key);
+//       callback(null);
+//     } catch (err) {
+//       callback(err);
+//     }
+//   }
+// };
+
 server.use(
   session({
     store: new RedisStore(redisClient),

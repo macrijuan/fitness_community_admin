@@ -29,7 +29,9 @@ router.post("/admin/sign_in",
               res.setHeader('X-Csrf-Token', req.session.csrf_token);
               res.setHeader('Access-Control-Expose-Headers', 'X-Csrf-Token');
               delete admin.password;
-              delete admin. reset_token;
+              delete admin.reset_token;
+              console.log("sign in req.session:");
+              console.log(req.session);
               res.json( admin );
             }else{
               res.status(404).json( sign_in_not_found("administrator") );
