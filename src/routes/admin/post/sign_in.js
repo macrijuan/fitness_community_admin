@@ -9,7 +9,7 @@ const { Admin, User } = require("../../../db.js");
 
 
 router.post("/admin/sign_in",
-  async(req,res)=>{
+  async( req, res, next )=>{
     try{
       // if(req.session.user) return res.status( 403 ).json(custom_error( "session", "This user is currently active." ));
       Admin.findOne({
@@ -40,21 +40,23 @@ router.post("/admin/sign_in",
         };
       });
     }catch(err){
-     
+      next( err );
     };
   }
 );
 
-router.get( "/test", async( req, res, next ) => {
-  try {
-    const key1 = await redisClient.scan('0');
-    console.log( key1 );
-    res.json( { value: key1 } );
-  } catch (err) {
-    next( err );
-  } finally {
-    redisClient.quit();
-  };
-} );
+router.get( "/test",
+  async( req, res, next ) => {
+    try {
+      const key1 = await redisClient.scan('0');
+      console.log( key1 );
+      res.json( { value: key1 } );
+    } catch (err) {
+      next( err );
+    } finally {
+      redisClient.quit();
+    };
+  }
+);
 
 module.exports = router;
