@@ -70,6 +70,7 @@ redisClient.on('error', (err) => {
 });
 
 async function getAllKeys() {
+  console.log('Fetching all keys...');
   let cursor = '0';
   let allKeys = [];
 
