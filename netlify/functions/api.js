@@ -23,8 +23,8 @@ server.set('trust proxy', true);
 
 server.use(
   rateLimit({
-    windowMs: 10000,
-    max: 10,
+    windowMs: 900000,
+    max: 500,
     handler: (req, res ) => {
       if( !limitReached.has( req.ip ) ){
         console.log("add limitted ip");
@@ -55,63 +55,36 @@ server.use(async (req, res, next) => {
   }, 700 );
 });
 
-class RedisStore extends session.Store {
-  constructor(redisClient) {
-    super();
-    this.redisClient = redisClient;
-  }
+// class RedisStore extends session.Store {
+//   constructor(redisClient) {
+//     super();
+//     this.redisClient = redisClient;
+//   }
 
-  async get(sid, callback) {
-    try {
-      const data = await this.redisClient.get(sid);
-      console.log("session gotten: ");
-      console.log(data);
-      callback(null, data ? JSON.parse(data) : null);
-    } catch (err) {
-      callback(err);
-    }
-  }
-
-  async set(sid, session, callback) {
-    try {
-      await this.redisClient.set(sid, JSON.stringify(session));
-      console.log("Session created or updated.");
-      callback(null);
-    } catch (err) {
-      callback(err);
-    }
-  }
-
-  async destroy(sid, callback) {
-    try {
-      await this.redisClient.del(sid);
-      callback(null);
-    } catch (err) {
-      callback(err);
-    }
-  }
-};
-
-// const customStore = {
-//   async get(key, callback) {
+//   async get(sid, callback) {
 //     try {
-//       const data = await redisClient.get(key);
+//       const data = await this.redisClient.get(sid);
+//       console.log("session gotten: ");
+//       console.log(data);
 //       callback(null, data ? JSON.parse(data) : null);
 //     } catch (err) {
 //       callback(err);
 //     }
-//   },
-//   async set(key, session, callback) {
+//   }
+
+//   async set(sid, session, callback) {
 //     try {
-//       await redisClient.set(key, JSON.stringify(session));
+//       await this.redisClient.set(sid, JSON.stringify(session));
+//       console.log("Session created or updated.");
 //       callback(null);
 //     } catch (err) {
 //       callback(err);
 //     }
-//   },
-//   async destroy(key, callback) {
+//   }
+
+//   async destroy(sid, callback) {
 //     try {
-//       await redisClient.del(key);
+//       await this.redisClient.del(sid);
 //       callback(null);
 //     } catch (err) {
 //       callback(err);
@@ -119,9 +92,37 @@ class RedisStore extends session.Store {
 //   }
 // };
 
+const customStore = {
+  async get(key, callback) {
+    try {
+      const data = await redisClient.get(key);
+      callback(null, data ? JSON.parse(data) : null);
+    } catch (err) {
+      callback(err);
+    }
+  },
+  async set(key, session, callback) {
+    try {
+      await redisClient.set(key, JSON.stringify(session));
+      callback(null);
+    } catch (err) {
+      callback(err);
+    }
+  },
+  async destroy(key, callback) {
+    try {
+      await redisClient.del(key);
+      callback(null);
+    } catch (err) {
+      callback(err);
+    }
+  }
+};
+
 server.use(
   session({
-    store: new RedisStore(redisClient),
+    // store: new RedisStore(redisClient),
+    store: customStore,
     // secret: key(),
     secret: process.env.SESSION_KEY,
     resave: false,

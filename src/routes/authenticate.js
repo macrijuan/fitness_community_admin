@@ -7,8 +7,8 @@ router.use(( req, res, next ) => {
     if ( req.session && req.session.user && req.get("X-Csrf-Token") === req.session.csrf_token ){
       next();
     }else{
-      // console.log( "req.session: ", req.session );
-      // console.log( "X-Csrf-Token: ", req.get("X-Csrf-Token") );
+      console.log( "req.session: ", req.session );
+      console.log( "X-Csrf-Token: ", req.get("X-Csrf-Token") );
       res.status(403).json( custom_error( "auth", "Try reloading the page. Request not authorized." ) );
     };
   }catch(err){
