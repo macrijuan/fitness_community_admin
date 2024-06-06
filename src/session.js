@@ -4,7 +4,7 @@ require("dotenv").config();
 const cachedSessions = new Map();
 let redisClient = undefined;
 
-if( process.env.ENVIRONMENT === 'local'){
+// if( process.env.ENVIRONMENT !== 'local'){
   redisClient = createClient({
     password: process.env.REDIS_PASSWORD,
     socket: {
@@ -24,6 +24,6 @@ if( process.env.ENVIRONMENT === 'local'){
   redisClient.on('connect', async() => {
     console.log('Connected to Redis');
   });
-};
+// };
   
 module.exports = { redisClient, cachedSessions:() => cachedSessions };
