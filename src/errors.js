@@ -8,6 +8,7 @@ module.exports={
   sign_in_not_found: ( dataName )=>custom_error( "sign_in_not_found", `There is no ${dataName} with such email and password.\nCheck the entered data.`  ),
   //SINGLE ERROR WITH FIXED MESSAGE.
   req_limit: { errors:{ req_limit:'Too many requests, please try again later.' } },
+  no_session: { errors: { no_session:" The session has expired. Please, log in again." } },
   unknown: { errors:{ unknown:"An unknown error occured." } },
   //ERROR TO FILL AN "ERRORS" OBJECT (must return a string).
   is_mandatory: ( dataName )=>`The ${dataName} field is mandatory`,

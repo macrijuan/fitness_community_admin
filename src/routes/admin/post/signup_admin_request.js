@@ -47,16 +47,6 @@ async( req, res )=>{
       del_signup( res.locals.signup_code );
     }, 3600000);
 
-      // console.log({
-      //   host: EMAIL_HOST,
-      //   port: parseInt(EMAIL_PORT),
-      //   secure: false, // true for 465, false for other ports
-      //   auth: {
-      //     user: EMAIL_USER,
-      //     pass: EMAIL_HOST_P
-      //   }
-      // });
-
       const transporter = nodemailer.createTransport({
         host: EMAIL_HOST,
         port: parseInt(EMAIL_PORT),//465
