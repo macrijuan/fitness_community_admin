@@ -3,7 +3,7 @@ const router = Router();
 const { redisClient, cachedSessions } = require("../../../session.js");
 const { verify } = require("argon2");
 const { randomBytes } = require("crypto");
-const { sign_in_not_found, not_found, custom_error } = require("../../../errors.js");
+const { sign_in_not_found, not_found } = require("../../../errors.js");
 const { Admin, User } = require("../../../db.js");
 
 const createSessionID = () => {
@@ -19,9 +19,9 @@ router.post("/admin/sign_in",
         },
         raw:true
       });
-      if(admin){
+      if( admin ){
         const match = await verify("$argon2i$v=19$m=65536,t=3,p=4$"+admin.password, req.body.password);
-        if(match){
+        if( match ){
           let sid = createSessionID();
           const sessionData = {
             cookie:{
@@ -66,6 +66,8 @@ router.post("/admin/sign_in",
       };
     }catch(err){
       next( err );
+    }finally{
+      redisClient.quit();
     };
   }
 );
