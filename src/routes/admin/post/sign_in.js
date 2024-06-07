@@ -53,7 +53,7 @@ router.post("/admin/sign_in",
               secure: true
             }
           );
-          res.setHeader('X-Csrf-Token', sessionData.user.csrf_token);
+          res.setHeader('X-Csrf-Token', sessionData.csrf_token);
           res.setHeader('Access-Control-Expose-Headers', 'X-Csrf-Token');
           delete admin.password;
           delete admin.reset_token;
