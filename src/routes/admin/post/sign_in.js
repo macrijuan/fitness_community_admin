@@ -39,7 +39,7 @@ router.post("/admin/sign_in",
             existingSession = await redisClient.get( sid );
           };
           if( admin.super_admin ) sessionData.user.super_admin = true;
-          redisClient.set( sid, JSON.stringify(sessionData), 'EX', 72000, ( err ) => {
+            await redisClient.set( sid, JSON.stringify(sessionData), 'EX', 72000, ( err ) => {
             if ( err ) {
               next( err );
             };
