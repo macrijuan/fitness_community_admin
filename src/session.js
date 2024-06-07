@@ -5,7 +5,7 @@ const cachedSessions = new Map();
 let redisClient = cachedSessions;
 
 if( process.env.ENVIRONMENT !== 'local'){
-  let redisClient = createClient({
+  redisClient = createClient({
     password: process.env.REDIS_PASSWORD,
     socket: {
       host: process.env.REDIS_HOST,
