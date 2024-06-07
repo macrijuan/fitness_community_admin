@@ -55,7 +55,6 @@ server.use(
 //   }, 700 );
 // });
 
-
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use( cookieParser() );
