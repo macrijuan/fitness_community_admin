@@ -1,6 +1,6 @@
 const { createClient } = require('redis');
 require("dotenv").config();
-const { } = process.env;
+const { REDIS_PASSWORD, REDIS_HOST, REDIS_PORT } = process.env;
 console.log( REDIS_PASSWORD, REDIS_HOST, REDIS_PORT );
 const cachedSessions = new Map();
 // let redisClient = undefined;
