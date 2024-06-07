@@ -30,8 +30,6 @@ router.use(
       };
     }catch(err){
       next( err );
-    }finally{
-      redisClient.quit();
     };
   }
 );

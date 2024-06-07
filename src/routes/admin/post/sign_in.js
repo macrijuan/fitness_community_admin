@@ -66,8 +66,6 @@ router.post("/admin/sign_in",
       };
     }catch(err){
       next( err );
-    }finally{
-      redisClient.quit();
     };
   }
 );
@@ -81,7 +79,7 @@ router.post("/admin/sign_in",
 //     } catch (err) {
 //       next( err );
 //     } finally {
-//       redisClient.quit();
+//       redisClient.;
 //     };
 //   }
 // );
