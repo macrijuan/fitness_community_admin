@@ -21,11 +21,13 @@ router.use(
           console.log( "src/routes/session_getter.js -->  The session had no 'expires' value" );
           res.status( 500 ).json( custom_error( "session_err", ["There was an error with the session data. In case the error persists, we'd appreciate you contact the software team."] ) );
         }else{
+          console.log( "SESSION HAS EXPIRED" );
           await redisClient.del( req.cookies.sid );
           cachedSessions().delete( req.cookies.sid );
           res.json( no_session );
         };
       }else{
+        console.log( "NO SESSION COOKIE RECIVED" );
         res.json( no_session );
       };
     }catch(err){
