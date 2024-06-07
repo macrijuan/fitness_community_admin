@@ -28,7 +28,7 @@ router.use(
         };
       }else{
         console.log( "NO SESSION COOKIE RECIVED" );
-        res.json( no_session );
+        res.status( 500 ).json( custom_error( "session_err", ["There was an error with the session data. In case the error persists, we'd appreciate you contact the software team."] ) );
       };
     }catch(err){
       next( err );
