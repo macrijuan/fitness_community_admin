@@ -24,9 +24,7 @@ router.post("/admin/sign_in",
         if( match ){
           let sid = createSessionID();
           const sessionData = {
-            cookie:{
-              expires: ( Date.now() + 72000000 ),// 2hs (in ms) starting from log in time
-            },
+            expires: ( Date.now() + 72000000 ),// 2hs (in ms) starting from log in time
             user:{
               id:admin.id,
               email:admin.email,
