@@ -50,7 +50,8 @@ router.post("/admin/sign_in",
             {
               // maxAge: 900000,
               httpOnly: true,
-              secure: true
+              secure: true,
+              sameSite:'none'
             }
           );
           res.setHeader('X-Csrf-Token', sessionData.csrf_token);
