@@ -19,6 +19,7 @@ router.use(
           next();
         }else if( !req.session.expires ){
           console.log( "src/routes/session_getter.js -->  The session had no 'expires' value" );
+          console.log( req.session );
           res.status( 500 ).json( custom_error( "session_err", ["There was an error with the session data. In case the error persists, we'd appreciate you contact the software team."] ) );
         }else{
           console.log( "SESSION HAS EXPIRED" );
