@@ -7,7 +7,7 @@ router.use(
   async( req, res, next ) => {
     try{
       if( req.cookies.sid ){
-        const cachedSession = cachedSessions.get( req.cookies.sid );
+        const cachedSession = cachedSessions().get( req.cookies.sid );
         if ( cachedSession ) {
           req.session = JSON.parse( cachedSession );
         } else {
