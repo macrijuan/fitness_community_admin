@@ -10,7 +10,7 @@ module.exports={
   req_limit: { errors:{ req_limit:'Too many requests, please try again later.' } },
   no_session: { errors: { no_session:" The session has expired. Please, log in again." } },
   unknown: { errors:{ unknown:"An unknown error occured." } },
-  //ERROR TO FILL AN "ERRORS" OBJECT (must return a string).
+  //ERROR TO FILL AND "ERRORS" OBJECT (must return a string).
   is_mandatory: ( dataName )=>`The ${dataName} field is mandatory`,
   strict_length: ( dataName, min, max )=>`The ${dataName} field must contain between ${min} and ${max} characters.`,
   strict_size: ( dataName, min, max )=>`The ${dataName} value must be between ${min} and ${max}.`,

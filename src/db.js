@@ -14,6 +14,7 @@ const modelDefiners = [
   require("./models/Exercise.js"),
   require("./models/Option.js"),
   require("./models/Routine.js"),
+  require("./models/Training_session.js"),
   require("./models/User.js")
 ];
 
@@ -26,16 +27,22 @@ let capsEntries = entries.map((entry) => {
 sequelize.models = Object.fromEntries(capsEntries);
 
 
-const { Activity, Exercise, Routine, User } = sequelize.models;
+const { Activity, Exercise, Training_session, Routine, User } = sequelize.models;
 
-Activity.belongsToMany( User, { through:"user_activities", timestamps:false } );
-User.belongsToMany( Activity, { through:"user_activities", timestamps:false } );
+Activity.belongsToMany( User, { through:"user_activities", timestamps:false, onDelete: 'CASCADE' } );
+User.belongsToMany( Activity, { through:"user_activities", timestamps:false, onDelete: 'CASCADE' } );
 
-Exercise.belongsToMany( User, { through:"user_exercises", timestamps:false } );
-User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false } );
+Exercise.belongsToMany( User, { through:"user_exercises", timestamps:false, onDelete: 'CASCADE' } );
+User.belongsToMany( Exercise, { through:"user_exercises", timestamps:false, onDelete: 'CASCADE' } );
 
-Routine.belongsToMany( User, { through:"user_routines", timestamps:false } );
-User.belongsToMany( Routine, { through:"user_routines", timestamps:false } );
+Training_session.belongsToMany( User, { through:"user_trainning_sessions", timestamps:false, onDelete: 'CASCADE' } );
+User.belongsToMany( Training_session, { through:"user_trainning_sessions", timestamps:false, onDelete: 'CASCADE' } );
+
+User.hasMany( Routine, { onDelete: 'CASCADE' } );
+Routine.belongsTo( User, { onDelete: 'CASCADE' } );
+
+Training_session.belongsToMany( Routine, { through:"routine_training_sessions", timestamps:false, onDelete: 'CASCADE' } );
+Routine.belongsToMany( Training_session, { through:"routine_training_sessions", timestamps:false, onDelete: 'CASCADE' } );
 
 module.exports = {
   ...sequelize.models,

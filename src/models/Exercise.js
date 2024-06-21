@@ -4,7 +4,8 @@ module.exports = sequelize=>{
   sequelize.define("exercise",{
     name:{
       type:STRING(30),
-      allowNull:false
+      allowNull:false,
+      unique:true
     },
     muscle:{
       type:STRING(30),
@@ -16,7 +17,8 @@ module.exports = sequelize=>{
     },
     video:{
       type:STRING(11500),
-      allowNull:false
+      allowNull:false,
+      unique:true
     }
   },{
     timestamps:false

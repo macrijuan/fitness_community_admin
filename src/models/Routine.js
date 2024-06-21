@@ -1,32 +1,19 @@
-const { STRING, ARRAY, INTEGER } = require("sequelize");
+const { STRING, INTEGER } = require("sequelize");
 
-module.exports = sequelize=>{
-  sequelize.define("routine",{
+module.exports = ( sequelize ) => {
+  sequelize.define( 'routine', {
     name:{
-      type:STRING(30),
+      type:STRING,
+      unique:true,
       allowNull:false
     },
-    day:{
+    start_day:{
       type:INTEGER,
-      allowNull:false
-    },
-
-    // day:{
-    //   type: ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
-    //   allowNull:false
-    // },
-
-    
-    // creator:{
-    //   type: STRING(30),
-    //   allowNull:false
-    // },
-    // tag:{
-    //   type:ARRAY(STRING),
-    //   allowNull:false
-    // },
-    note:{
-      type:STRING(700)
+      validate:{
+        max:31, min:1
+      }
     }
-  });
+  },{
+    timestamps:false
+  })
 };

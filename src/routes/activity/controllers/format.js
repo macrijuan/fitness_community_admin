@@ -1,15 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 const val = require("../../input_validations/activity_validation.js");
-const { custom_error } = require("../../../errors.js");
-const time = date => new Date( date ).getMilliseconds();
 
 router.use( async( req, res, next ) => {
   try{
     const errors = {};
     res.locals.data = {};
-    console.log( "req.body:" );
-    console.log( req.body );
     
     if( req.method === 'PUT' ){
       if( req.body.day !== undefined ){

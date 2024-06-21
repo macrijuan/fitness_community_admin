@@ -18,22 +18,6 @@ module.exports = sequelize=>{
       type:TIME,
       allowNull:false
     },
-    // start_hour:{
-    //   type: INTEGER,
-    //   allowNull: false
-    // },
-    // start_minutes:{
-    //   type: INTEGER,
-    //   allowNull: false
-    // },
-    // end_hour:{
-    //   type: INTEGER,
-    //   allowNull: false
-    // },
-    // end_minutes:{
-    //   type: INTEGER,
-    //   allowNull: false
-    // },
     instructor:{
       type:STRING(30),
       allowNull:false
