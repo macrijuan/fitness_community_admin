@@ -42,7 +42,7 @@ router.post("/admin/sign_in",
               next( err );
             };
           } );
-          cachedSessions().set( sid, JSON.stringify( sessionData ) );
+          cachedSessions().set( sid, sessionData );
           res.cookie(
             "sid", sid,
             {

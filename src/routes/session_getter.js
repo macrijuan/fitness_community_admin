@@ -8,9 +8,11 @@ router.use(
     try{
       if( req.cookies.sid ){
         const cachedSession = cachedSessions().get( req.cookies.sid );
-        if ( cachedSession ) {
-          req.session = JSON.parse( cachedSession );
-        } else {
+        console.log( "cachedSession:" );
+        console.log( cachedSession );
+        if( cachedSession ){
+          req.session = cachedSession;
+        }else{
           const redisSession = await redisClient.get( req.cookies.sid );
           req.session = JSON.parse( redisSession );
         };
@@ -19,8 +21,6 @@ router.use(
           cachedSessions().set( req.cookies.sid, req.session );
           next();
         }else if( !req.session.expires ){
-          console.log( "src/routes/session_getter.js -->  The session had no 'expires' value" );
-          console.log( req.session );
           res.status( 500 ).json( custom_error( "session_err", ["There was an error with the session data. In case the error persists, we'd appreciate you contact the software team."] ) );
         }else{
           console.log( "SESSION HAS EXPIRED" );
