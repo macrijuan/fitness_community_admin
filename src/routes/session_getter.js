@@ -16,6 +16,7 @@ router.use(
         };
         if( !req.session ) return res.json( no_session );
         if( req.session.expires > Date.now() ){
+          cachedSessions().set( req.cookies.sid, req.session );
           next();
         }else if( !req.session.expires ){
           console.log( "src/routes/session_getter.js -->  The session had no 'expires' value" );

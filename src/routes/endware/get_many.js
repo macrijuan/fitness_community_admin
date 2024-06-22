@@ -32,7 +32,7 @@ router.use( async( req, res, next )=>{
 
 
 
-    const _data = await models[ res.locals.model ].findAndCountAll( res.locals.data )
+    const _data = await models[ res.locals.model ].findAndCountAll( res.locals.data );
     if( _data.rows.length ){
       if( req.query.options ){
         // const attributes = _data.rows[ 0 ].rawAttributes;

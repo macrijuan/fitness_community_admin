@@ -8,7 +8,7 @@ const getMany = require("../endware/get_many.js");
 const { Exercise } = require("../../db.js");
 const { not_found } = require("../../errors");
 
-router.delete( "/delete_activity/:id",
+router.delete( "/delete_exercise/:id",
   async( req, res, next ) => {
     try{
       const ids = req.params.id.split( "+" );
